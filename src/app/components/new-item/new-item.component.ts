@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { NewItemService } from './new-item.service';
+import { SpeciesService } from '../../services/species.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'sl-new-item',
@@ -12,12 +13,13 @@ export class NewItemComponent implements OnInit {
   loadingSpecies: boolean;
   genderValid: boolean;
 
-  constructor(private newItemService: NewItemService) { }
+  constructor(private _speciesService: SpeciesService, private router: Router) { }
 
   ngOnInit() {
 
+    this.genderValid = false;
     this.loadingSpecies = true;
-    this.optionsSelect = this.newItemService.getSpecies().subscribe((species: Array<string>) => {
+    this.optionsSelect = this._speciesService.getSpecies().subscribe((species: Array<string>) => {
       this.optionsSelect = species;
       console.log(this.optionsSelect);
       this.loadingSpecies = false;
@@ -27,6 +29,8 @@ export class NewItemComponent implements OnInit {
 
   sendForm() {
 
+
+    this.router.navigate(['/home']);
   }
 
 }

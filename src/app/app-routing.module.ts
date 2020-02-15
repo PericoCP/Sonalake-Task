@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { ListViewComponent } from './list-view/list-view.component';
-import { NewItemComponent } from './new-item/new-item.component';
+import { ListViewComponent } from './components/list-view/list-view.component';
+import { NewItemComponent } from './components/new-item/new-item.component';
 
 const routes: Routes = [
   { path: 'home', component: ListViewComponent },

@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class NewItemService {
+export class SpeciesService {
   constructor(private http: HttpClient) { }
 
   getSpecies() {
