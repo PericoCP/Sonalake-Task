@@ -13,8 +13,18 @@ export class CharactersService {
 
   constructor(private http: HttpClient) { }
 
-  getCharacters() {
-    return this.http.get(this.url);
+  getCharacters(page?: number, limit?: number, search?: string) {
+    let finalUrl = this.url;
+    if (page) {
+      finalUrl += '?_page=' + page;
+    }
+    if (limit) {
+      finalUrl += '&limit=' + limit;
+    }
+    if (search) {
+      finalUrl += '&q=' + search;
+    }
+    return this.http.get(finalUrl);
   }
 
   addCharacter(character: Characters) {
@@ -25,6 +35,10 @@ export class CharactersService {
       })
     };
     return this.http.post(this.url, character, httpOptions);
+  }
+
+  searchCharacters(query: string) {
+    return this.http.get(this.url + '?q=' + query);
   }
 
   editCharacter(character: Characters) {

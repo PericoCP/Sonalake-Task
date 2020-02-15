@@ -34,15 +34,18 @@
       <label for="validationServerUsername">Gender<span style="color: blue;">*</span></label>
       <div class="input-group">
         <div class="form-check form-check-inline">
-          <input class="form-check-input is-invalid" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="male" required>
+          <input class="form-check-input is-invalid" type="radio" name="inlineRadioOptions" id="inlineRadio1"
+            value="male" required>
           <label class="form-check-label" for="gender1">Male</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input is-invalid" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="female" required>
+          <input class="form-check-input is-invalid" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+            value="female" required>
           <label class="form-check-label" for="gender2">Female</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input is-invalid" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="n/a" required>
+          <input class="form-check-input is-invalid" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+            value="n/a" required>
           <label class="form-check-label" for="gender3">n/a</label>
           <div class="valid-feedback" style="margin-left: 1em" *ngIf="!genderValid">
             Looks good!
@@ -60,7 +63,7 @@
   </div>
   <div class="container-fluid">
     <div class="row justify-content-md-center">
-  <button class="btn btn-primary" type="submit" (click)="sendForm()">Add character</button>
-</div>
-</div>
+      <button class="btn btn-primary" type="submit" (click)="sendForm()">Add character</button>
+    </div>
+  </div>
 </form>
