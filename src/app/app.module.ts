@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { ListViewComponent } from './components/list-view/list-view.component';
 import { NewItemComponent } from './components/new-item/new-item.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    RouterModule,
     ReactiveFormsModule
   ],
   providers: [],

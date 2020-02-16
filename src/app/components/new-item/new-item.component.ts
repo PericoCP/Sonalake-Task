@@ -17,11 +17,8 @@ export class NewItemComponent implements OnInit {
   loadingSpecies: boolean;
   genderValid: boolean;
   character: Characters;
-  name = '';
-  species = '';
-  gender = '';
-  homeworld = '';
   loginForm: FormGroup;
+  editMode = false;
   controlStatusHost = {
     '[class.is-valid]': 'ngClassValid',
     '[class.is-invalid]': 'ngClassInvalid'
@@ -30,6 +27,19 @@ export class NewItemComponent implements OnInit {
   constructor(private _speciesService: SpeciesService, private _charactersService: CharactersService, private router: Router) { }
 
   ngOnInit() {
+
+    if (localStorage.getItem('character')) {
+      this.editMode = true;
+      this.character = JSON.parse(localStorage.getItem('character'));
+    } else {
+      this.editMode = false;
+      this.character = {
+        name: '',
+        species: '',
+        gender: '',
+        homeworld: ''
+      };
+    }
 
     this.loginForm = new FormGroup({
       'name': new FormControl('', [
@@ -58,6 +68,9 @@ export class NewItemComponent implements OnInit {
 
   sendForm(): void {
 
+    let id: number;
+
+    this.editMode ? id = this.character.id : '';
     // this.character.name = this.name;
     // this.character.species = this.species;
     // this.character.gender = this.gender;
@@ -67,9 +80,20 @@ export class NewItemComponent implements OnInit {
 
     console.log(this.character);
 
-    this._charactersService.addCharacter(this.character).subscribe(char => {
-      console.log(char);
-    });
+    if (this.editMode) {
+      console.log(this.character);
+
+      this._charactersService.editCharacter(this.character, id).subscribe(char => {
+        console.log(char);
+      });
+      localStorage.removeItem('character');
+    } else {
+      this._charactersService.addCharacter(this.character).subscribe(char => {
+        console.log(char);
+      });
+    }
+    this.router.navigate(['/home']);
+
   }
 
 }

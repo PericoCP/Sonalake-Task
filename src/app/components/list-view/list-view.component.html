@@ -4,13 +4,12 @@
   <div class="col-sm-6">
     <div class="form-group input-group">
       <label for="searchInput" class="sr-only">Search</label>
-      <input type="text" class="form-control" id="searchInput" [value]="search" placeholder="Search..."
-        (change)="searchResults()">
+      <input type="text" class="form-control" id="searchInput" [(ngModel)]="search" placeholder="Search..."
+        (change)="searchResults(actualPage, true)">
       <div class="input-group-append">
-        <span class="input-group-text" id="inputGroupPrepend3" (click)="searchResults()"><i class="fa fa-search"
-            aria-hidden="true"></i></span>
+        <span class="input-group-text" id="inputGroupPrepend3" (click)="searchResults(actualPage, true)"><i
+            class="fa fa-search" aria-hidden="true"></i></span>
       </div>
-
     </div>
   </div>
   <div class="col-sm-6 text-sm-right">
@@ -18,7 +17,7 @@
   </div>
 </div>
 
-<table class="table table-bordered table-hover" *ngIf="!loading">
+<table class="table table-bordered table-hover" *ngIf="!loading && anyResult">
   <thead class="thead-light">
     <tr>
       <th scope="col">Id</th>
@@ -50,6 +49,10 @@
   </tbody>
 </table>
 
+<div *ngIf="!loading && !anyResult" class="alert alert-warning mx-auto" role="alert">
+  No results found with these searched params, try another search.
+</div>
+
 <div *ngIf="loading" class="d-flex justify-content-center">
   <div class="spinner-grow text-primary" role="status">
     <span class="sr-only">Loading...</span>
@@ -62,21 +65,28 @@
       <div class="form-group row">
         <label for="numberOfItems" class="col-sm-4 col-form-label">Nº of Results/Page</label>
         <div class="col-sm-8">
-          <input type="number" class="form-control" id="numberOfItems" [value]="numberPerPage"
-            placeholder="How many results per page" required>
+          <input type="number" class="form-control" id="numberOfItems" [(ngModel)]="numberPerPage"
+            placeholder="How many results per page" min=5 max=20
+            (focusout)="numberPerPage >= 5 && numberPerPage <= 20 ? searchResults(actualPage, false) : ''" required>
+          <div style="color: red;" *ngIf="numberPerPage < 5 || numberPerPage > 20">
+            Input value between 5 and 20
+          </div>
         </div>
       </div>
     </div>
+
     <div class="col-md-6 mb-4">
       <ul class="pagination justify-content-end">
-        <li class="page-item disabled">
-          <a class="page-link" href="#" tabindex="-1">Previous</a>
+        <li class="page-item">
+          <a class="page-link" (click)="actualPage=actualPage-1 && searchResults(actualPage-1, false)"
+            [attr.disabled]="actualPage < 2">Previous</a>
         </li>
         <li class="page-item active" *ngFor="let item of ' '.repeat(numberOfPages).split(''), let i = index">
-          <a class="page-link" href="#">{{i+1}}<span class="sr-only">(current)</span></a>
+          <a class="page-link" (click)="searchResults(i+1, false)">{{i+1}}<span class="sr-only">(current)</span></a>
         </li>
         <li class="page-item">
-          <a class="page-link" href="#">Next</a>
+          <a class="page-link" ([click])="actualPage=actualPage+1 && searchResults(actualPage+1, false)"
+            [attr.disabled]="actualPage >= numberOfPages">Next</a>
         </li>
       </ul>
     </div>

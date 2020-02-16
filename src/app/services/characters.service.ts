@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Characters } from '../models/character.model';
 import { catchError, retry } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
@@ -27,34 +27,19 @@ export class CharactersService {
     return this.http.post<Characters>(this.url, character).pipe(catchError(this.handleError));
   }
 
-  searchCharacters(page?: number, limit?: number, search?: string) {
-    let finalUrl = this.url;
-    if (page) {
-      finalUrl += '?_page=' + page;
-    }
-    if (limit) {
-      finalUrl += '&limit=' + limit;
-    }
-    if (search) {
-      finalUrl += '&q=' + search;
-    }
-    return this.http.get(finalUrl);
+  searchCharacters(page: number, limit: number, search: string) {
+    return this.http.get(this.url + '?_page=' + page + '&_limit=' + limit + '&q=' + search);
   }
 
-  editCharacter(character: Characters) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': 'my-auth-token'
-      })
-    };
-    return this.http.put(this.url, character, httpOptions).pipe(
+  editCharacter(character: Characters, id: number) {
+
+    return this.http.put(this.url + '/' + id, JSON.stringify(character), { headers: { 'Content-Type': 'application/json' } }).pipe(
       retry(3),
       catchError(this.handleError)
     );
   }
 
-  removeCharacter(id: string) {
+  removeCharacter(id: number) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -79,8 +64,8 @@ export class CharactersService {
         `Backend returned code ${error.status}, ` +
         `body was: ${error.error}`);
     }
-    // return an observable with a user-facing error message
+    // Return an observable with a user-facing error message
     return throwError(
-      'Something wrong happened; please retry later.');
+      'Something wrong happened. Please retry later.');
   }
 }
