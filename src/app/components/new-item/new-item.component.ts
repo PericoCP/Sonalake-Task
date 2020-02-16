@@ -81,7 +81,7 @@ export class NewItemComponent implements OnInit {
       this.speciesValid = false;
       document.getElementById('validationServer02').focus();
     }
-    if (this.character.name === '') {
+    if (this.character.name === '' || this.character.name.length < 3) {
       this.nameValid = false;
       document.getElementById('validationServer01').focus();
     }
