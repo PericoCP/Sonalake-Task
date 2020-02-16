@@ -1,8 +1,10 @@
-<form>
+<h1>New Character</h1>
+
+<form [formGroup]="loginForm" (ngSubmit)="sendForm() && loginForm.valid">
   <div class="form-row">
     <div class="col-md-6 mb-4">
       <label for="validationServer01">Name<span style="color: blue;">*</span></label>
-      <input type="text" class="form-control is-valid" id="validationServer01" placeholder="Perico Caballero"
+      <input type="text" class="form-control" formControlName="name" id="validationServer01" placeholder="Perico Caballero"
         minlength="5" required>
       <div class="valid-feedback">
         Looks good!
@@ -14,7 +16,7 @@
     <div class="col-md-6 mb-4">
       <label for="validationServer02">Species<span style="color: blue;">*</span></label>
       <div class="input-group">
-        <select class="custom-select is-invalid" id="validationServer02" required>
+        <select class="custom-select is-invalid" id="validationServer02" formControlName="species" required>
           <option selected disabled value="">Choose...</option>
           <ng-container *ngIf="!loadingSpecies">
             <option *ngFor="let item of optionsSelect" [value]="item">{{item}}</option>
@@ -34,17 +36,17 @@
       <label for="validationServerUsername">Gender<span style="color: blue;">*</span></label>
       <div class="input-group">
         <div class="form-check form-check-inline">
-          <input class="form-check-input is-invalid" type="radio" name="inlineRadioOptions" id="inlineRadio1"
+          <input class="form-check-input is-invalid" type="radio" formControlName="gender" id="inlineRadio1"
             value="male" required>
           <label class="form-check-label" for="gender1">Male</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input is-invalid" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+          <input class="form-check-input is-invalid" type="radio" formControlName="gender" id="inlineRadio2"
             value="female" required>
           <label class="form-check-label" for="gender2">Female</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input is-invalid" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+          <input class="form-check-input is-invalid" type="radio" formControlName="gender" id="inlineRadio3"
             value="n/a" required>
           <label class="form-check-label" for="gender3">n/a</label>
           <div class="valid-feedback" style="margin-left: 1em" *ngIf="!genderValid">
@@ -58,12 +60,12 @@
     </div>
     <div class="col-md-6 mb-4">
       <label for="validationServer03">Homeworld</label>
-      <input type="text" class="form-control is-invalid" id="validationServer03" required>
+      <input type="text" class="form-control" id="validationServer03" formControlName="homeworld" placeholder="Naboo">
     </div>
   </div>
   <div class="container-fluid">
     <div class="row justify-content-md-center">
-      <button class="btn btn-primary" type="submit" (click)="sendForm()">Add character</button>
+      <button class="btn btn-primary" type="submit">Add character</button>
     </div>
   </div>
 </form>

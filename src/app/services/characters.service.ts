@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Characters } from '../models/character.model';
 import { catchError, retry } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { throwError, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,21 @@ export class CharactersService {
 
   constructor(private http: HttpClient) { }
 
-  getCharacters(page?: number, limit?: number, search?: string) {
+  getCharacters() {
+    return this.http.get(this.url);
+  }
+
+  addCharacter(character: Characters): Observable<Characters> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'my-auth-token'
+      })
+    };
+    return this.http.post<Characters>(this.url, character).pipe(catchError(this.handleError));
+  }
+
+  searchCharacters(page?: number, limit?: number, search?: string) {
     let finalUrl = this.url;
     if (page) {
       finalUrl += '?_page=' + page;
@@ -25,20 +39,6 @@ export class CharactersService {
       finalUrl += '&q=' + search;
     }
     return this.http.get(finalUrl);
-  }
-
-  addCharacter(character: Characters) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': 'my-auth-token'
-      })
-    };
-    return this.http.post(this.url, character, httpOptions);
-  }
-
-  searchCharacters(query: string) {
-    return this.http.get(this.url + '?q=' + query);
   }
 
   editCharacter(character: Characters) {

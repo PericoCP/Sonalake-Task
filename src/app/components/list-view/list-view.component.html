@@ -59,10 +59,12 @@
 <nav aria-label="Data grid navigation" *ngIf="!loading">
   <div class="row">
     <div class="col-md-6 mb-4">
-      <div class="form-group">
-        <label for="searchInput" class="sr-only">Search</label>
-        <input type="number" class="form-control" [value]="numberPerPage" placeholder="How many results per page"
-          required>
+      <div class="form-group row">
+        <label for="numberOfItems" class="col-sm-4 col-form-label">Nº of Results/Page</label>
+        <div class="col-sm-8">
+          <input type="number" class="form-control" id="numberOfItems" [value]="numberPerPage"
+            placeholder="How many results per page" required>
+        </div>
       </div>
     </div>
     <div class="col-md-6 mb-4">
