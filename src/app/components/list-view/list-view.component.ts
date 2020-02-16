@@ -72,14 +72,13 @@ export class ListViewComponent implements OnInit {
 
   deleteCharacter(id: number) {
     this._characterService.removeCharacter(id).subscribe(char => {
-      console.log(char);
-
 
       // This would remove the character from characters, but Nº of results/page will no longer fit with shown results, so a new get call must be done
       // this.characters = this.characters.filter(x => {
       //   return x.id !== id;
       // });
 
+      // console.log(char);
       this.ngOnInit();
 
     });

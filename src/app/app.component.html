@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-primary mb-3">
-  <a class="navbar-brand" routerLink="">Sonalake Task</a>
+  <a class="navbar-brand" routerLink="/home">Sonalake Task</a>
   <button class="navbar-toggler" type="button"
     (click)="isOpen = !isOpen"
     [class.collapsed]="!isOpen"
@@ -9,8 +9,13 @@
   </button>
   <div class="collapse navbar-collapse" [class.show]="isOpen">
     <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" routerLink="">List View
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/home">List View
+          <span class="sr-only">(current)</span>
+        </a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/add" routerLinkActive="active-link">Add New
           <span class="sr-only">(current)</span>
         </a>
       </li>

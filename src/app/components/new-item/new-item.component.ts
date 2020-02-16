@@ -3,8 +3,7 @@ import { SpeciesService } from '../../services/species.service';
 import { Router } from '@angular/router';
 import { CharactersService } from 'src/app/services/characters.service';
 import { Characters } from 'src/app/models/character.model';
-import { Directive, Self } from '@angular/core';
-import { NgControl, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'sl-new-item',
@@ -15,14 +14,13 @@ export class NewItemComponent implements OnInit {
 
   optionsSelect: any;
   loadingSpecies: boolean;
-  genderValid: boolean;
   character: Characters;
   loginForm: FormGroup;
   editMode = false;
-  controlStatusHost = {
-    '[class.is-valid]': 'ngClassValid',
-    '[class.is-invalid]': 'ngClassInvalid'
-  };
+
+  nameValid = true;
+  speciesValid = true;
+  genderValid = true;
 
   constructor(private _speciesService: SpeciesService, private _charactersService: CharactersService, private router: Router) { }
 
@@ -56,7 +54,6 @@ export class NewItemComponent implements OnInit {
       ])
     });
 
-    this.genderValid = false;
     this.loadingSpecies = true;
     this.optionsSelect = this._speciesService.getSpecies().subscribe((species: Array<string>) => {
       this.optionsSelect = species;
@@ -70,30 +67,40 @@ export class NewItemComponent implements OnInit {
 
     let id: number;
 
+    this.genderValid = true;
+    this.speciesValid = true;
+    this.nameValid = true;
+
     this.editMode ? id = this.character.id : '';
-    // this.character.name = this.name;
-    // this.character.species = this.species;
-    // this.character.gender = this.gender;
-    // this.character.homeworld = this.homeworld;
+
+    if (this.character.gender === '') {
+      this.genderValid = false;
+      document.getElementById('inlineRadio1').focus();
+    }
+    if (this.character.species === '') {
+      this.speciesValid = false;
+      document.getElementById('validationServer02').focus();
+    }
+    if (this.character.name === '') {
+      this.nameValid = false;
+      document.getElementById('validationServer01').focus();
+    }
 
     this.character = this.loginForm.value;
 
-    console.log(this.character);
+    if (this.nameValid && this.speciesValid && this.genderValid) {
+      if (this.editMode) {
 
-    if (this.editMode) {
-      console.log(this.character);
+        this._charactersService.editCharacter(this.character, id).subscribe();
+        localStorage.removeItem('character');
 
-      this._charactersService.editCharacter(this.character, id).subscribe(char => {
-        console.log(char);
-      });
-      localStorage.removeItem('character');
-    } else {
-      this._charactersService.addCharacter(this.character).subscribe(char => {
-        console.log(char);
-      });
+      } else {
+        this._charactersService.addCharacter(this.character).subscribe();
+      }
+
+      this.router.navigate(['/home']);
+
     }
-    this.router.navigate(['/home']);
-
   }
 
 }
