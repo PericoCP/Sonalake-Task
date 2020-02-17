@@ -8,24 +8,39 @@
         (change)="searchResults(actualPage, true)">
       <div class="input-group-append">
         <span class="input-group-text" id="inputGroupPrepend3" (click)="searchResults(actualPage, true)"><i
-            class="fa fa-search" aria-hidden="true"></i></span>
+            class="fa fa-search"></i></span>
       </div>
     </div>
   </div>
   <div class="col-sm-6 text-sm-right">
-    <a routerLink="/add" class="btn btn-primary mb-3">Add New</a>
+    <a (click)="goToNew()" class="btn btn-primary mb-3 active">Add New</a>
   </div>
 </div>
 
-<table class="table table-bordered table-hover" *ngIf="!loading && anyResult">
+<table class="table table-bordered table-hover table-sm" id="charTable" *ngIf="!loading && anyResult">
   <thead class="thead-light">
     <tr>
-      <th scope="col">Id</th>
-      <th scope="col">Name</th>
-      <th scope="col">Species</th>
-      <th scope="col">Gender</th>
-      <th scope="col">Homeworld</th>
-      <th scope="col">Actions</th>
+      <th scope="col" class="th-sm">Id <i class="fa fa-sort-up" [ngClass]="{'redColor':sort=='id' && ascendant}"
+          (click)="sortCharacters('id',true)"></i>
+        /<i class="fa fa-sort-down" [ngClass]="{'redColor':sort=='id' && !ascendant}"
+          (click)="sortCharacters('id', false)"></i></th>
+      <th scope="col" class="th-sm">Name <i class="fa fa-sort-up" [ngClass]="{'redColor':sort=='name' && ascendant}"
+          (click)="sortCharacters('name',true)"></i>
+        /<i class="fa fa-sort-down" [ngClass]="{'redColor':sort=='name' && !ascendant}"
+          (click)="sortCharacters('name', false)"></i></th>
+      <th scope="col" class="th-sm">Species <i class="fa fa-sort-up"
+          [ngClass]="{'redColor':sort=='species' && ascendant}" (click)="sortCharacters('species',true)"></i>
+        /<i class="fa fa-sort-down" [ngClass]="{'redColor':sort=='species' && !ascendant}"
+          (click)="sortCharacters('species', false)"></i></th>
+      <th scope="col" class="th-sm">Gender <i class="fa fa-sort-up" [ngClass]="{'redColor':sort=='gender' && ascendant}"
+          (click)="sortCharacters('gender',true)"></i>
+        /<i class="fa fa-sort-down" [ngClass]="{'redColor':sort=='gender' && !ascendant}"
+          (click)="sortCharacters('gender', false)"></i></th>
+      <th scope="col" class="th-sm">Homeworld <i class="fa fa-sort-up"
+          [ngClass]="{'redColor':sort=='homeworld' && ascendant}" (click)="sortCharacters('homeworld',true)"></i>
+        /<i class="fa fa-sort-down" [ngClass]="{'redColor':sort=='homeworld' && !ascendant}"
+          (click)="sortCharacters('homeworld', false)"></i></th>
+      <th scope="col" class="th-sm">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -38,10 +53,10 @@
       <td>
         <div class="btn-group btn-group-sm" role="group" aria-label="Actions">
           <button type="button" class="btn btn-secondary" (click)="editCharacter(character)">
-            <i class="fa fa-pencil" aria-hidden="true"></i> Edit
+            <i class="fa fa-pencil"></i> Edit
           </button>
           <button type="button" class="btn btn-danger" (click)="deleteCharacter(character.id)">
-            <i class="fa fa-trash-o" aria-hidden="true"></i> Remove
+            <i class="fa fa-trash-o"></i> Remove
           </button>
         </div>
       </td>
@@ -50,7 +65,7 @@
 </table>
 
 <div *ngIf="!loading && !anyResult" class="alert alert-warning mx-auto" role="alert">
-  No results found with these searched params, try another search.
+  No results found.
 </div>
 
 <div *ngIf="loading" class="d-flex justify-content-center">
@@ -78,15 +93,25 @@
     <div class="col-md-6 mb-4">
       <ul class="pagination justify-content-end">
         <li class="page-item">
-          <a class="page-link" (click)="actualPage=actualPage-1 && searchResults(actualPage-1, false)"
-            [attr.disabled]="actualPage < 2">Previous</a>
-        </li>
-        <li class="page-item active" *ngFor="let item of ' '.repeat(numberOfPages).split(''), let i = index">
-          <a class="page-link" (click)="searchResults(i+1, false)">{{i+1}}<span class="sr-only">(current)</span></a>
+          <a class="page-link" (click)="searchResults(1, false)">First</a>
         </li>
         <li class="page-item">
-          <a class="page-link" ([click])="actualPage=actualPage+1 && searchResults(actualPage+1, false)"
-            [attr.disabled]="actualPage >= numberOfPages">Next</a>
+          <a *ngIf="actualPage == 1" class="page-link disabled">Previous</a>
+          <a *ngIf="actualPage != 1" class="page-link" (click)="searchResults(actualPage-1, false)"
+            [attr.disabled]="actualPage == 1 ? '' : null">Previous</a>
+        </li>
+        <ng-container *ngFor="let item of ' '.repeat(numberOfPages).split(''), let i = index">
+          <li class="page-item" [ngClass]="{'active' : i+1 == actualPage}">
+            <a class="page-link" (click)="searchResults(i+1, false)">{{i+1}}<span
+                class="sr-only active">(current)</span></a>
+          </li>
+        </ng-container>
+        <li class="page-item">
+          <a *ngIf="actualPage == numberOfPages" class="page-link disabled">Next</a>
+          <a *ngIf="actualPage != numberOfPages" class="page-link" (click)="searchResults(actualPage+1, false)">Next</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" (click)="searchResults(numberOfPages, false)">Last</a>
         </li>
       </ul>
     </div>

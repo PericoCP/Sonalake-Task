@@ -19,6 +19,8 @@ export class ListViewComponent implements OnInit {
   numberOfResults: number;
   numberOfPages: number;
   maxResults: number;
+  sort: string;
+  ascendant: boolean;
 
   constructor(private _characterService: CharactersService, private router: Router) { }
 
@@ -38,6 +40,7 @@ export class ListViewComponent implements OnInit {
         this.maxResults = this.numberOfResults;
       }
     });
+
   }
 
   searchResults(pageToFocus: number, isFilter: boolean) {
@@ -46,7 +49,7 @@ export class ListViewComponent implements OnInit {
 
     this.loading = true;
     this.anyResult = false;
-    this._characterService.searchCharacters(this.actualPage, this.numberPerPage, this.search).subscribe((chars: Characters[]) => {
+    this._characterService.searchCharacters(this.actualPage, this.numberPerPage, this.search, this.sort, this.ascendant).subscribe((chars: Characters[]) => {
       this.loading = false;
 
       if (chars.length === 0) {
@@ -78,9 +81,28 @@ export class ListViewComponent implements OnInit {
       //   return x.id !== id;
       // });
 
-      // console.log(char);
       this.ngOnInit();
 
     });
+  }
+
+  goToNew() {
+    if (localStorage.getItem('character')) {
+      localStorage.removeItem('character');
+    }
+    this.router.navigate(['/add']);
+  }
+
+  sortCharacters(column: string, asc: boolean) {
+
+    if (column === this.sort) {
+      this.sort = '';
+      this.ascendant = false;
+    } else {
+      this.sort = column;
+      this.ascendant = asc;
+    }
+
+    this.searchResults(this.actualPage, false);
   }
 }

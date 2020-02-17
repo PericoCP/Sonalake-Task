@@ -27,8 +27,14 @@ export class CharactersService {
     return this.http.post<Characters>(this.url, character).pipe(catchError(this.handleError));
   }
 
-  searchCharacters(page: number, limit: number, search: string) {
-    return this.http.get(this.url + '?_page=' + page + '&_limit=' + limit + '&q=' + search);
+  searchCharacters(page: number, limit: number, search: string, sort: string, asc: boolean = false) {
+    let order: string;
+    if (asc) {
+      order = 'asc';
+    } else {
+      order = 'desc';
+    }
+    return this.http.get(this.url + '?_page=' + page + '&_limit=' + limit + '&q=' + search + '&_sort=' + sort + '&_order=' + order);
   }
 
   editCharacter(character: Characters, id: number) {

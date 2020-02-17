@@ -1,4 +1,4 @@
-<div class="mt-5">
+<div *ngIf="!formSuccessful" class="mt-5">
   <h1 *ngIf="!editMode">New Character</h1>
   <h1 *ngIf="editMode">Editing Character with id: {{character.id}}</h1>
 
@@ -71,4 +71,13 @@
       </div>
     </div>
   </form>
+</div>
+
+<div *ngIf="formSuccessful" class="mt-5">
+  <div class="alert alert-success" role="alert">
+    Form was correct, you'll return to list after 5 seconds
+  </div>
+  <div class="row justify-content-md-center">
+  <button type="button" class="btn btn-primary" routerLink="/home">Return now</button>
+</div>
 </div>

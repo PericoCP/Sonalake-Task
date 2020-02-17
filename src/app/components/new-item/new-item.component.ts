@@ -17,6 +17,7 @@ export class NewItemComponent implements OnInit {
   character: Characters;
   loginForm: FormGroup;
   editMode = false;
+  formSuccessful: boolean;
 
   nameValid = true;
   speciesValid = true;
@@ -25,6 +26,8 @@ export class NewItemComponent implements OnInit {
   constructor(private _speciesService: SpeciesService, private _charactersService: CharactersService, private router: Router) { }
 
   ngOnInit() {
+
+    this.formSuccessful = false;
 
     if (localStorage.getItem('character')) {
       this.editMode = true;
@@ -57,7 +60,6 @@ export class NewItemComponent implements OnInit {
     this.loadingSpecies = true;
     this.optionsSelect = this._speciesService.getSpecies().subscribe((species: Array<string>) => {
       this.optionsSelect = species;
-      console.log(this.optionsSelect);
       this.loadingSpecies = false;
     });
 
@@ -98,7 +100,12 @@ export class NewItemComponent implements OnInit {
         this._charactersService.addCharacter(this.character).subscribe();
       }
 
-      this.router.navigate(['/home']);
+      this.formSuccessful = true;
+
+      setTimeout(() => {
+        this.router.navigate(['/home']);
+      }, 5000);
+
 
     }
   }
