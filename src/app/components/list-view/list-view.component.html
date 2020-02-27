@@ -5,10 +5,10 @@
     <div class="form-group input-group">
       <label for="searchInput" class="sr-only">Search</label>
       <input type="text" class="form-control" id="searchInput" [(ngModel)]="search" placeholder="Search..."
-        (change)="searchResults(actualPage, true)">
+        (keyup)="searchResults(actualPage, true)">
       <div class="input-group-append">
-        <span class="input-group-text" id="inputGroupPrepend3" (click)="searchResults(actualPage, true)"><i
-            class="fa fa-search"></i></span>
+        <span class="input-group-text" id="inputGroupPrepend3" (click)="searchResults(actualPage, true)">
+          <i class="fa fa-search"></i></span>
       </div>
     </div>
   </div>

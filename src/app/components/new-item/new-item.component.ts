@@ -17,7 +17,6 @@ export class NewItemComponent implements OnInit {
   character: Characters;
   loginForm: FormGroup;
   editMode = false;
-  formSuccessful: boolean;
 
   nameValid = true;
   speciesValid = true;
@@ -26,8 +25,6 @@ export class NewItemComponent implements OnInit {
   constructor(private _speciesService: SpeciesService, private _charactersService: CharactersService, private router: Router) { }
 
   ngOnInit() {
-
-    this.formSuccessful = false;
 
     if (localStorage.getItem('character')) {
       this.editMode = true;
@@ -100,12 +97,7 @@ export class NewItemComponent implements OnInit {
         this._charactersService.addCharacter(this.character).subscribe();
       }
 
-      this.formSuccessful = true;
-
-      setTimeout(() => {
-        this.router.navigate(['/home']);
-      }, 5000);
-
+      this.router.navigate(['/home']);
 
     }
   }
